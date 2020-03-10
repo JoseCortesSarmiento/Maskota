@@ -2,14 +2,14 @@
 include 'global/config.php';
 include 'global/conexion.php';
 include 'carrito.php';
-//include 'templates/header.php';
+include 'templates/header.php';
 ?>
 <?php
 if($_POST){
     try{
         $pdo -> beginTransaction();
         //cliente
-        $Correo="mail@mail.com";//$_POST["correo"];
+        $Correo=$_POST["correo"];
         $cliente=$pdo->prepare("INSERT INTO `clientes` 
         (`id_cliente`, `nombre`, `apellido`, `telefono`, `correo`, 
         `rfc`, `calle`, `numero_ext`, `numero_int`, `colonia`, `ciudad`, 
@@ -28,7 +28,7 @@ if($_POST){
     }
     
     try{
-        $pdo -> beginTransaction(); echo "</br>";
+        $pdo -> beginTransaction(); 
         //venta
         $total=0;
         $SID=session_id();
@@ -46,9 +46,10 @@ if($_POST){
 
         $query->execute();
         //echo $pdo->inTransaction(); echo "</br>";
+        $idVenta=$pdo->lastInsertId();
         $pdo->commit();
 
-        $idVenta=$pdo->lastInsertId();
+        
 
         //venta_partida
         foreach($_SESSION['CARRITO'] as $indice=>$producto){
